@@ -10,6 +10,7 @@ dependencies = [
     "asyncpg>=0.31.0",
     "fastapi>=0.123.5",
     "passlib[argon2]>=1.7.4",
+    "pydantic[all,email]>=2.12.5",
     "pyjwt>=2.10.1",
     "python-dotenv>=1.2.1",
     "sqlalchemy>=2.0.44",

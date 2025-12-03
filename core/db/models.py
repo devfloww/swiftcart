@@ -1,19 +1,19 @@
-from email.policy import default
 from sqlalchemy import (
-    Column,
-    ForeignKey
+    ForeignKey,
     String,
     Integer,
     Numeric,
     DateTime,
     Boolean,
     Enum as SQLEnum,
-    func
+    func,
+    select
 )
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
-from datetime import datetime, timezone
+from datetime import datetime
 import enum
 from decimal import Decimal
+from typing import Optional
 
 class Base(DeclarativeBase):
     pass
@@ -62,3 +62,7 @@ class Vendor(Base):
     
     # relationships
     user: Mapped["Ueser"] = relationship("User", back_populates="vendor", uselist=False)
+    
+# class Product(Base):
+#     __tablename__ = "products"
+#     pass

@@ -10,7 +10,7 @@ wheels/
 .venv
 
 # Database 
-*.db
+*swiftcart.db
 
 # Others
 *.log

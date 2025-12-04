@@ -66,3 +66,32 @@ class VendorRead(BaseModel):
     
     class Config:
         from_attributes = True
+
+class ProductCreate(BaseModel):
+    vendor_id: int
+    name: str = Field(..., min_length=2, max_length=100)
+    title: str = Field(..., min_length=2, max_length=100)
+    description: Optional[str] = Field(None, max_length=1000)
+    price: float = Field(..., gt=0)
+    stock_quantity: int = Field(..., ge=0)
+    images: Optional[list[str]] = None
+    
+class ProductRead(BaseModel):
+    id: int
+    vendor_id: int
+    name: str
+    title: str
+    slug: str
+    description: Optional[str] = None
+    price: float
+    compare_at_price: Optional[float] = None
+    flash_sale_price: Optional[float] = None
+    stock_quantity: int
+    is_published: bool
+    is_flash_sale: Optional[bool] = None
+    images: Optional[list[str]] = None
+    created_at: datetime
+    flash_ends_at: datetime
+    
+    class Config:
+        from_attributes = True

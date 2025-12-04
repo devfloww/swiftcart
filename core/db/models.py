@@ -7,14 +7,12 @@ from sqlalchemy import (
     Boolean,
     Enum as SQLEnum,
     func,
-    select
 )
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from datetime import datetime
 import enum
 from decimal import Decimal
-from typing import Optional
-import json
+from typing import Optional, List
 
 class Base(DeclarativeBase):
     pass
@@ -80,7 +78,7 @@ class Product(Base):
     stock_quantity: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     is_published: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     is_flash_sale: Mapped[bool] = mapped_column(Boolean, default=False, nullable=True)
-    images: Mapped[json] = mapped_column(String, nullable=True)  # Store JSON as string
+    images: Mapped[List[str]] = mapped_column(List[String], nullable=True)  # Store JSON as string
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     flash_ends_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[datetime]= mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.db.database import get_db, engine
+from core.db.database import get_db
 from core.db.schemas import UserCreate, UserRead
 from core.db import models
 from core.utils.security import hash_password

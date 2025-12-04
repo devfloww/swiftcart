@@ -14,6 +14,7 @@ from datetime import datetime
 import enum
 from decimal import Decimal
 from typing import Optional
+import json
 
 class Base(DeclarativeBase):
     pass
@@ -61,8 +62,28 @@ class Vendor(Base):
     )
     
     # relationships
-    user: Mapped["Ueser"] = relationship("User", back_populates="vendor", uselist=False)
+    user: Mapped["User"] = relationship("User", back_populates="vendor", uselist=False)
+    products: Mapped["Product"] = relationship("Product", back_populates="vendor")
+
+class Product(Base):
+    __tablename__ = "products"
     
-# class Product(Base):
-#     __tablename__ = "products"
-#     pass
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    vendor_id: Mapped[int] = mapped_column(Integer, ForeignKey("vendors.id", ondelete="CASCADE"), nullable=False, index=True)
+    name: Mapped[str] = mapped_column(String(100), nullable=False)
+    title: Mapped[str] = mapped_column(String(100), nullable=False)
+    slug: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
+    description: Mapped[str] = mapped_column(String(1000), nullable=True)
+    price: Mapped[Decimal] = mapped_column(Numeric(12, 2), nullable=False, server_default=Decimal("0.0"))
+    compare_at_price: Mapped[Decimal] = mapped_column(Numeric(12, 2), nullable=True, server_default=Decimal("0.0"))
+    flash_sale_price = Mapped[Decimal] = mapped_column(Numeric(12, 2), nullable=True, server_default=Decimal("0.0"))
+    stock_quantity: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    is_published: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    is_flash_sale: Mapped[bool] = mapped_column(Boolean, default=False, nullable=True)
+    images: Mapped[json] = mapped_column(String, nullable=True)  # Store JSON as string
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    flash_ends_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    updated_at: Mapped[datetime]= mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+    
+    # relationships
+    vendor: Mapped["Vendor"] = relationship("Vendor", back_populates="products")
